@@ -1,22 +1,22 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
-import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader';
-import {MeshSurfaceSampler} from 'three/examples/jsm/math/MeshSurfaceSampler';
-import vertex from './shader/vertexShader.glsl'; 
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { MeshSurfaceSampler } from 'three/examples/jsm/math/MeshSurfaceSampler';
+import vertex from './shader/vertexShader.glsl';
 import fragment from './shader/fragmentShader.glsl';
 
 
 class Model {
-    constructor(obj){
-         console.log(obj);
+    constructor(obj) {
+        console.log(obj);
         this.name = obj.name
         this.file = obj.file
         this.scene = obj.scene
         this.placeOnLoad = obj.placeOnLoad
         this.color1 = obj.color1
         this.color2 = obj.color2
-
+        this.background = obj.background
         this.isActive = false;
 
         this.loader = new GLTFLoader()
@@ -27,7 +27,7 @@ class Model {
         this.init()
     }
 
-    init(){
+    init() {
         this.loader.load(this.file, (response) => {
             // console.log(response)
 
@@ -45,7 +45,7 @@ class Model {
             //     wireframe: true
             // })
             // this.mesh.material = this.material
-            
+
             /**
              * Geometry
              */
@@ -60,13 +60,13 @@ class Model {
             //     color: 'green',
             //     size: 0.02
             // })
-            
+
             this.particlesMaterial = new THREE.ShaderMaterial({
-                uniforms:{
-                    uColor1: {value: new THREE.Color(this.color1)},
-                    uColor2: {value: new THREE.Color(this.color2)},
-                    uTime: {value: 0},
-                    uScale: {value: 0}
+                uniforms: {
+                    uColor1: { value: new THREE.Color(this.color1) },
+                    uColor2: { value: new THREE.Color(this.color2) },
+                    uTime: { value: 0 },
+                    uScale: { value: 0 }
                 },
                 vertexShader: vertex,
                 fragmentShader: fragment,
@@ -88,14 +88,14 @@ class Model {
             // We had particle randomness to be able to move them each one by one in a direction with uTime
             const particlesRandomness = new Float32Array(numParticles * 3)
 
-            for (let i = 0; i<numParticles; i++){
+            for (let i = 0; i < numParticles; i++) {
                 const newPosition = new THREE.Vector3()
                 sampler.sample(newPosition)
                 particlesPosition.set([
                     newPosition.x,
                     newPosition.y,
                     newPosition.z,
-                ], i * 3 )
+                ], i * 3)
 
 
                 particlesRandomness.set([
@@ -107,7 +107,7 @@ class Model {
             }
 
             this.particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPosition, 3))
-            
+
             this.particlesGeometry.setAttribute('aRandom', new THREE.BufferAttribute(particlesRandomness, 3))
             console.log(this.particlesGeometry)
             /**
@@ -120,35 +120,61 @@ class Model {
              * Place on load
              */
 
-            if(this.placeOnLoad){
+            if (this.placeOnLoad) {
                 this.add()
             }
         })
     }
 
-    add(){
+    add() {
         this.scene.add(this.particles)
-        this.isActive = true
 
-        gsap.to(this.particlesMaterial.uniforms.uScale,{
+
+        gsap.to(this.particlesMaterial.uniforms.uScale, {
             value: 1,
             duration: .8,
             delay: .3,
             ease: 'power3.out'
         })
+
+        if (!this.isActive) {
+            gsap.fromTo(this.particles.rotation, {
+                y: Math.PI
+            }, {
+                y: 0,
+                diration: 0.8,
+                ease: 'power3.out'
+            })
+            this.isActive = true
+
+            // Update background color
+            gsap.to('body', {
+                background: this.background,
+                duration: 0.8,
+                ease: 'power3.in'
+            })
+        }
+
+
     }
 
-    remove(){
-        gsap.to(this.particlesMaterial.uniforms.uScale,{
+    remove() {
+        gsap.to(this.particlesMaterial.uniforms.uScale, {
             value: 0,
             duration: .8,
             ease: 'power3.out',
-            onComplete: () =>{
+            onComplete: () => {
                 this.scene.remove(this.particles)
                 this.isActive = false
             }
         })
+
+        gsap.to(this.particles.rotation, {
+            y: Math.PI,
+            duration: .8,
+            ease: 'power3.out'
+        })
     }
 }
 
-export default Model; 
+export default Model;
