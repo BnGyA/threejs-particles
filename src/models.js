@@ -16,6 +16,7 @@ class Model {
         this.color1 = obj.color1
         this.color2 = obj.color2
 
+        this.isActive = false;
 
         this.loader = new GLTFLoader()
         this.dracoLoader = new DRACOLoader()
@@ -62,7 +63,8 @@ class Model {
             this.particlesMaterial = new THREE.ShaderMaterial({
                 uniforms:{
                     uColor1: {value: new THREE.Color(this.color1)},
-                    uColor2: {value: new THREE.Color(this.color2)}
+                    uColor2: {value: new THREE.Color(this.color2)},
+                    uTime: {value: 0}
                 },
                 vertexShader: vertex,
                 fragmentShader: fragment,
@@ -81,6 +83,9 @@ class Model {
             this.particlesGeometry = new THREE.BufferGeometry()
             const particlesPosition = new Float32Array(numParticles * 3)
 
+            // We had particle randomness to be able to move them each one by one in a direction with uTime
+            const particlesRandomness = new Float32Array(numParticles * 3)
+
             for (let i = 0; i<numParticles; i++){
                 const newPosition = new THREE.Vector3()
                 sampler.sample(newPosition)
@@ -89,11 +94,20 @@ class Model {
                     newPosition.y,
                     newPosition.z,
                 ], i * 3 )
+
+
+                particlesRandomness.set([
+                    // Number from -1 to 1
+                    Math.random() * 2 - 1,
+                    Math.random() * 2 - 1,
+                    Math.random() * 2 - 1
+                ], i * 3)
             }
 
             this.particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPosition, 3))
+            
+            this.particlesGeometry.setAttribute('aRandom', new THREE.BufferAttribute(particlesRandomness, 3))
             console.log(this.particlesGeometry)
-
             /**
              * Particles
              */
@@ -112,10 +126,12 @@ class Model {
 
     add(){
         this.scene.add(this.particles)
+        this.isActive = true
     }
 
     remove(){
         this.scene.remove(this.particles)
+        this.isActive = false
     }
 }
 
