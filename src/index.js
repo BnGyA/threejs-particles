@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
+import Model from './models.js';
 /*------------------------------
 Renderer
 ------------------------------*/
@@ -34,7 +34,7 @@ const material = new THREE.MeshBasicMaterial( {
   color: 0x00ff00,
 } );
 const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+//scene.add( cube );
 
 
 /*------------------------------
@@ -44,14 +44,44 @@ const controls = new OrbitControls( camera, renderer.domElement );
 
 
 /*------------------------------
-Helpers
+Helpers 
 ------------------------------*/
 const gridHelper = new THREE.GridHelper( 10, 10 );
 scene.add( gridHelper );
 const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
+ 
+
+/*------------------------------
+Models
+------------------------------*/
+const skull = new Model({
+  name: 'skull',
+  file: './models/skull.glb',
+  scene: scene,
+  placeOnLoad: true
+});
+
+const horse = new Model({
+  name: 'horse',
+  file: './models/horse.glb',
+  scene: scene
+});
 
 
+/*------------------------------
+Controller
+------------------------------*/
+const buttons = document.querySelectorAll('.button')
+buttons[0].addEventListener('click', () =>{
+  skull.add()
+  horse.remove()
+})
+
+buttons[1].addEventListener('click', () =>{
+  horse.add()
+  skull.remove()
+})
 /*------------------------------
 Loop
 ------------------------------*/
