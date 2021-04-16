@@ -9,6 +9,10 @@ varying vec3 vPosition;
 
 // Pass time
 uniform float uTime;
+
+// Pass scale
+uniform float uScale;
+
 void main() {
     vPosition = position;
 
@@ -23,6 +27,13 @@ void main() {
     // move with time
     // pos.x +=sin(uTime);
     // pos.y +=cos(uTime);
+
+    // SCALING
+    pos.x *= uScale + (sin(pos.y * 4.0 + time) * (1.0 - uScale));
+    pos.y *= uScale + (sin(pos.z * 4.0 + time) * (1.0 - uScale));
+    pos.z *= uScale + (cos(pos.x * 4.0 + time) * (1.0 - uScale));
+
+    pos *= uScale;
 
     // move random for each point
     pos.x += sin(time * aRandom.x) * 0.01;
