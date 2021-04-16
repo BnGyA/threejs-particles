@@ -46,10 +46,10 @@ const controls = new OrbitControls( camera, renderer.domElement );
 /*------------------------------
 Helpers 
 ------------------------------*/
-const gridHelper = new THREE.GridHelper( 10, 10 );
-scene.add( gridHelper );
-const axesHelper = new THREE.AxesHelper( 5 );
-scene.add( axesHelper );
+// const gridHelper = new THREE.GridHelper( 10, 10 );
+// scene.add( gridHelper );
+// const axesHelper = new THREE.AxesHelper( 5 );
+// scene.add( axesHelper );
  
 
 /*------------------------------
@@ -57,6 +57,8 @@ Models
 ------------------------------*/
 const skull = new Model({
   name: 'skull',
+  color1: 'red',
+  color2: 'yellow',
   file: './models/skull.glb',
   scene: scene,
   placeOnLoad: true
@@ -64,6 +66,8 @@ const skull = new Model({
 
 const horse = new Model({
   name: 'horse',
+  color1: 'blue',
+  color2: 'pink',
   file: './models/horse.glb',
   scene: scene
 });
