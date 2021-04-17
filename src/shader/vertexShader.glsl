@@ -28,10 +28,15 @@ void main() {
     // pos.x +=sin(uTime);
     // pos.y +=cos(uTime);
 
-    // SCALING
-    pos.x *= uScale + (sin(pos.y * 4.0 + time) * (1.0 - uScale));
-    pos.y *= uScale + (sin(pos.z * 4.0 + time) * (1.0 - uScale));
-    pos.z *= uScale + (cos(pos.x * 4.0 + time) * (1.0 - uScale));
+    // // SCALING
+    // pos.x *= uScale + (sin(pos.y * 4.0 + time) * (1.0 - uScale));
+    // pos.y *= uScale + (sin(pos.z * 4.0 + time) * (1.0 - uScale));
+    // pos.z *= uScale + (cos(pos.x * 4.0 + time) * (1.0 - uScale));
+
+    float scaling = 15.0;
+    pos.x *= uScale + (sin(pos.y * 4.0 + time) * (1.0 - uScale) * scaling);
+    pos.y *= uScale + (sin(pos.z * 4.0 + time) * (1.0 - uScale) * scaling);
+    pos.z *= uScale + (cos(pos.x * 4.0 + time) * (1.0 - uScale) * scaling);
 
     pos *= uScale;
 

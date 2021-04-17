@@ -1,3 +1,7 @@
+uniform float uScale;
+
+uniform float uTime;
+
 // GET POSITION
 varying vec3 vPosition;
 // PASS COLOR
@@ -15,5 +19,6 @@ void main() {
 
     color = mix(uColor1, uColor2, vPosition.z * 0.5 + 0.5);
     // DEPTH
-    gl_FragColor = vec4(color, depth * 0.3 + 0.2);
+    //gl_FragColor = vec4(color, uScale);
+    gl_FragColor = vec4(color, (depth * 0.3 + 0.2) * uScale);
 }

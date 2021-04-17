@@ -18,7 +18,7 @@ class Model {
         this.color2 = obj.color2
         this.background = obj.background
         this.isActive = false;
-
+        this.duration = 1;
         this.loader = new GLTFLoader()
         this.dracoLoader = new DRACOLoader()
         this.dracoLoader.setDecoderPath('./draco/')
@@ -132,17 +132,19 @@ class Model {
 
         gsap.to(this.particlesMaterial.uniforms.uScale, {
             value: 1,
-            duration: .8,
+            duration: this.duration,
             delay: .3,
             ease: 'power3.out'
         })
 
         if (!this.isActive) {
             gsap.fromTo(this.particles.rotation, {
-                y: Math.PI
+                y: Math.PI * 2,
+                x: Math.PI * 2
             }, {
                 y: 0,
-                diration: 0.8,
+                x: 0,
+                duration: this.duration,
                 ease: 'power3.out'
             })
             this.isActive = true
@@ -150,7 +152,7 @@ class Model {
             // Update background color
             gsap.to('body', {
                 background: this.background,
-                duration: 0.8,
+                duration: this.duration,
                 ease: 'power3.in'
             })
         }
@@ -161,17 +163,18 @@ class Model {
     remove() {
         gsap.to(this.particlesMaterial.uniforms.uScale, {
             value: 0,
-            duration: .8,
+            duration: this.duration,
             ease: 'power3.out',
             onComplete: () => {
                 this.scene.remove(this.particles)
                 this.isActive = false
             }
         })
+        
 
         gsap.to(this.particles.rotation, {
-            y: Math.PI,
-            duration: .8,
+            y: Math.PI * 2,
+            duration: this.duration,
             ease: 'power3.out'
         })
     }
