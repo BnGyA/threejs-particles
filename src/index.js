@@ -137,4 +137,4 @@ function onMouseMove(e){
     x: gsap.utils.mapRange(0, window.innerHeight, .2, -.2, y)
   })
 }
-window.addEventListener('mousemove', onMouseMove)
+window.addEventListener('mousemove', onMouseMove) 
