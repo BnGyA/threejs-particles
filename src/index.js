@@ -58,23 +58,36 @@ Helpers
 Models
 ------------------------------*/
 const skull = new Model({
-  name: 'skull',
+  name: 'uruz',
   color1: 'red',
   color2: 'yellow',
   background: '#47001b',
-  file: './models/skull.glb',
+  file: './models/uruz.glb',
   scene: scene,
-  placeOnLoad: true
+  placeOnLoad: true,
+  positionMoved: -1
 });
 
 const horse = new Model({
-  name: 'horse',
+  name: 'fehu',
   color1: 'blue',
   color2: 'pink',
   background: '#110047',
-  file: './models/horse.glb',
-  scene: scene
+  file: './models/fehu.glb',
+  scene: scene,
+  positionMoved: 0
 });
+
+const thorn = new Model({
+  name: 'thorn',
+  color1: 'blue',
+  color2: 'pink',
+  background: '#110047',
+  file: './models/ythorno.glb',
+  scene: scene,
+  positionMoved: 1
+});
+
 
 
 /*------------------------------
@@ -84,11 +97,25 @@ const buttons = document.querySelectorAll('.button')
 buttons[0].addEventListener('click', () =>{
   skull.add()
   horse.remove()
+  thorn.remove()
 })
 
 buttons[1].addEventListener('click', () =>{
   horse.add()
   skull.remove()
+  thorn.remove()
+})
+
+buttons[2].addEventListener('click', () =>{
+  thorn.add()
+  skull.remove()
+  horse.remove()
+})
+
+buttons[3].addEventListener('click', () =>{
+  thorn.add()
+  skull.add()
+  horse.add()
 })
 
 
@@ -109,6 +136,9 @@ const animate = function () {
   }
   if(horse.isActive){
     horse.particlesMaterial.uniforms.uTime.value = clock.getElapsedTime();
+  }
+  if(thorn.isActive){
+    thorn.particlesMaterial.uniforms.uTime.value = clock.getElapsedTime();
   }
   
 };

@@ -16,6 +16,7 @@ class Model {
         this.placeOnLoad = obj.placeOnLoad
         this.color1 = obj.color1
         this.color2 = obj.color2
+        this.positionMoved = obj.positionMoved
         this.background = obj.background
         this.isActive = false;
         this.duration = 1;
@@ -29,7 +30,7 @@ class Model {
 
     init() {
         this.loader.load(this.file, (response) => {
-            // console.log(response)
+            console.log(response)
 
             /**
              * Original mesh
@@ -66,7 +67,8 @@ class Model {
                     uColor1: { value: new THREE.Color(this.color1) },
                     uColor2: { value: new THREE.Color(this.color2) },
                     uTime: { value: 0 },
-                    uScale: { value: 0 }
+                    uScale: { value: 0 },
+                    uPositionMoved: { value: this.positionMoved }
                 },
                 vertexShader: vertex,
                 fragmentShader: fragment,
@@ -81,7 +83,7 @@ class Model {
              */
 
             const sampler = new MeshSurfaceSampler(this.mesh).build()
-            const numParticles = 20000
+            const numParticles = 15000
             this.particlesGeometry = new THREE.BufferGeometry()
             const particlesPosition = new Float32Array(numParticles * 3)
 
@@ -107,6 +109,7 @@ class Model {
             }
 
             this.particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPosition, 3))
+            
 
             this.particlesGeometry.setAttribute('aRandom', new THREE.BufferAttribute(particlesRandomness, 3))
             console.log(this.particlesGeometry)
@@ -178,6 +181,8 @@ class Model {
             ease: 'power3.out'
         })
     }
+
+    
 }
 
 export default Model;
