@@ -78,6 +78,7 @@ class Model {
                 blending: THREE.AdditiveBlending
             })
 
+            
             /**
              * Particles geometry -- Basically, we create particles along the vertices
              */
@@ -95,6 +96,7 @@ class Model {
                 sampler.sample(newPosition)
                 particlesPosition.set([
                     newPosition.x,
+                    //newPosition.y + this.positionMoved,
                     newPosition.y,
                     newPosition.z,
                 ], i * 3)
@@ -156,11 +158,13 @@ class Model {
             gsap.to('body', {
                 background: this.background,
                 duration: this.duration,
-                ease: 'power3.in'
+                ease: 'power3.in',
+                className: 'active',
+                onComplete: () =>{
+                    document.querySelector('body').classList.remove('active')
+                }
             })
         }
-
-
     }
 
     remove() {
