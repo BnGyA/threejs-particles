@@ -113,7 +113,7 @@ const uruz = new Model({
   color1: 'red',
   color2: 'yellow',
   background: '#47001b',
-  file: './models/uruz.glb',
+  file: './models/kenaz.glb',
   scene: scene,
   placeOnLoad: true,
   positionMoved: 0
@@ -134,7 +134,7 @@ const thorn = new Model({
   color1: 'blue',
   color2: 'pink',
   background: '#110047',
-  file: './models/ythorno.glb',
+  file: './models/thorn.glb',
   scene: scene,
   positionMoved: 2
 });
